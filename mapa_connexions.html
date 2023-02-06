@@ -1,0 +1,134 @@
+<div id="anychart-embed-src-maps-connectors-busiest-routes-from-heathrow-airport" class="anychart-embed anychart-embed-src-maps-connectors-busiest-routes-from-heathrow-airport">
+<script src="https://cdn.anychart.com/geodata/latest/custom/world/world.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-map.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js"></script>
+<div id="ac_style_src-maps-connectors-busiest-routes-from-heathrow-airport" style="display:none;">
+html,
+body,
+#container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+</div>
+<script>(function(){
+function ac_add_to_head(el){
+	var head = document.getElementsByTagName('head')[0];
+	head.insertBefore(el,head.firstChild);
+}
+function ac_add_link(url){
+	var el = document.createElement('link');
+	el.rel='stylesheet';el.type='text/css';el.media='all';el.href=url;
+	ac_add_to_head(el);
+}
+function ac_add_style(css){
+	var ac_style = document.createElement('style');
+	if (ac_style.styleSheet) ac_style.styleSheet.cssText = css;
+	else ac_style.appendChild(document.createTextNode(css));
+	ac_add_to_head(ac_style);
+}
+ac_add_link('https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css');
+ac_add_link('https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css');
+ac_add_style(document.getElementById("ac_style_src-maps-connectors-busiest-routes-from-heathrow-airport").innerHTML);
+ac_add_style(".anychart-embed-src-maps-connectors-busiest-routes-from-heathrow-airport{width:1400px;height:900px;}");
+})();</script>
+<div id="container"></div>
+<script>
+anychart.onDocumentReady(function () {
+  // The data used in this sample can be obtained from the CDN
+  // https://cdn.anychart.com/samples/maps-connectors/busiest-routes-from-heathrow-airport/data.json
+  anychart.data.loadJsonFile(
+    'https://raw.githubusercontent.com/lucas28torres/Connections/main/connetion.json',
+    function (data) {
+      // Creates map chart
+      var map = anychart.connector();
+
+      // Sets settings for map chart
+      map.padding([10, 10, 10, 10]);
+      map
+        .unboundRegions()
+        .enabled(true)
+        .fill('#E1E1E1')
+        .stroke('#D2D2D2');
+      map.geoData('anychart.maps.world');
+      map.interactivity().selectionMode('none');
+
+      // Sets title for map chart and customizes it
+      
+      // Sets credits data
+     
+      // Creates connector series for destinations and customizes them
+      var connectorSeries = map
+        .connector(data)
+        .startSize(0)
+        .endSize(0)
+        .stroke('0.5 #1976d2')
+        .curvature(0.3);
+
+      connectorSeries.hovered().stroke('1.5 #455a64');
+
+      connectorSeries
+        .markers()
+        .position('1000%')
+        .size(4)
+        .fill('#1976d2')
+        .stroke('2 #E1E1E1')
+        .type('circle');
+
+      connectorSeries
+        .hovered()
+        .markers()
+        .position('100%')
+        .size(4)
+        .fill('#455a64')
+        .stroke('2 #455a64')
+        .type('circle');
+
+     
+
+      // Customizes labels on hover for the destination series
+      connectorSeries
+        .hovered()
+        .labels()
+        .fontColor('#455a64')
+        .fontSize(11);
+
+      // Sets tooltip setting for the destination series
+      connectorSeries.tooltip().title(true);
+      connectorSeries
+        .tooltip()
+        .padding([8, 13, 10, 13])
+        .separator(true)
+        .titleFormat('To {%to}');
+      connectorSeries
+        .tooltip()
+        .useHtml(true)
+        .fontSize(13)
+        .format(function () {
+          return (
+            'Passengers (2014): ' +
+            anychart.format.number(this.getData('passengers'), {
+              groupsSeparator: ','
+            })
+          );
+        });
+
+      // create zoom controls
+      var zoomController = anychart.ui.zoom();
+      zoomController.render(map);
+
+      // Sets container id for the chart
+      map.container('container');
+
+      // Initiates chart drawing
+      map.draw();
+    }
+  );
+});
+</script>
+</div>
